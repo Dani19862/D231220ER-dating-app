@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
 
- 
+
     public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
@@ -20,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
              var users = await _context.Users.ToListAsync();
