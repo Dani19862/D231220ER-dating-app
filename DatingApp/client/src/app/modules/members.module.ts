@@ -1,12 +1,12 @@
-import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MemberListComponent } from '../members/member-list/member-list.component';
 import { MemberDetailComponent } from '../members/member-detail/member-detail.component';
+import { MemberListComponent } from '../members/member-list/member-list.component';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  {path: '', component: MemberListComponent, pathMatch: 'full'},
-  {path: 'id', component: MemberListComponent},
+  { path: '', component: MemberListComponent, pathMatch: 'full' },
+  { path: ':id', component: MemberDetailComponent },
 ]
 
 @NgModule({
@@ -19,6 +19,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [
+
     RouterModule,
     MemberListComponent,
     MemberDetailComponent,
