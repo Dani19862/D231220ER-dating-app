@@ -17,7 +17,7 @@ constructor(
   return this.accountService.currentUser$.pipe(
     map(user=>{
       if(user) return true;
-      this.toastr.error('You Shall Not Pass ');
+      this.toastr.error('You Shall Not Pass');
       return false;
    })
 

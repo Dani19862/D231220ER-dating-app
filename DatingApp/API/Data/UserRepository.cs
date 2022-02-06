@@ -14,13 +14,14 @@ namespace API.Data
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+
         public UserRepository(DataContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMemberAsync()
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
             return await _context.Users
             .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
@@ -57,7 +58,7 @@ namespace API.Data
         public async Task<bool> SaveAllAsync()
         {
             // var changes = _context.ChangeTracker.Entries<AppUser>().Count();
-            // var numOfChanges = await _context.SaveChangesAsync();
+            // var numOfChanges = await _context.SaveChangesAsync(); 
             // return numOfChanges == changes;
             return await _context.SaveChangesAsync() > 0;
         }

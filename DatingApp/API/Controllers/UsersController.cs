@@ -1,14 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Data;
 using API.DTOs;
-using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -26,7 +22,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var usersToReturn = await _userRepository.GetMemberAsync();
+            var usersToReturn = await _userRepository.GetMembersAsync();
             // var users = await _userRepository.GetUsersAsync();
             // var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
             return Ok(usersToReturn);

@@ -9,11 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   registerMode =false;
   users: any;
+  
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.getUsers();
-    
+
   }
   registerToggle(){
     this.registerMode = !this.registerMode;
@@ -29,6 +30,6 @@ export class HomeComponent implements OnInit {
   cancelRegisterMode($event: boolean){
     this.registerMode = $event;
   }
-  
+
 
 }

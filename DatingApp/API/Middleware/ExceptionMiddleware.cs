@@ -11,17 +11,17 @@ namespace API.Middleware
 {
     public class ExceptionMiddleware
     {
-        private readonly RequestDelegate _nxet;
+        private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly IHostEnvironment _env;
 
         public ExceptionMiddleware(
-            RequestDelegate nxet,
+            RequestDelegate next,
             ILogger<ExceptionMiddleware> logger,
             IHostEnvironment env
         )
         {
-            _nxet = nxet;
+            _next = next;
             _logger = logger;
             _env = env;
         }
@@ -30,7 +30,7 @@ namespace API.Middleware
         {
             try
             {
-                await _nxet(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
