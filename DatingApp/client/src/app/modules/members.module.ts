@@ -7,16 +7,19 @@ import { Routes, RouterModule } from '@angular/router';
 import { MemberCardComponent } from '../members/member-card/member-card.component';
 import { SharedModule } from './shared.module';
 
+
 const routes: Routes = [
   { path: '', component: MemberListComponent, pathMatch: 'full' },
   { path: ':username', component: MemberDetailComponent }
+
 ]
 
 @NgModule({
   declarations: [
     MemberListComponent,
     MemberDetailComponent,
-    MemberCardComponent
+    MemberCardComponent,
+
   ],
   imports: [
     CommonModule,

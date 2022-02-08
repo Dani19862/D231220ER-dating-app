@@ -14,6 +14,7 @@ export class AccountService {
   baseUrl = environment.apiUrl;
   private currentUserSource$ = new ReplaySubject<User | null>(1);
   currentUser$ = this.currentUserSource$.asObservable();
+  getConfing: any;
 
   constructor(private http: HttpClient) { }
 
@@ -51,4 +52,5 @@ export class AccountService {
         return user;
       }))
   }
+
 }

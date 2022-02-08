@@ -13,6 +13,7 @@ import { AccountService } from '../services/account.service';
 })
 export class NavComponent implements OnInit {
   model: any = {};
+
   currentUser$ : Observable<User | null>;
 
   constructor(
@@ -21,7 +22,8 @@ export class NavComponent implements OnInit {
     private toastr: ToastrService
     ) {
     this.currentUser$ = this.accountService.currentUser$;
-   }
+    
+     }
 
 
   ngOnInit(): void {

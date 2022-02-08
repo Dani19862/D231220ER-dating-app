@@ -1,10 +1,8 @@
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
@@ -20,6 +18,9 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { SharedModule } from './modules/shared.module';
+import { MemberEditComponent } from './member-edit/member-edit.component';
+
+
 
 
 @NgModule({
@@ -28,12 +29,13 @@ import { SharedModule } from './modules/shared.module';
     NavComponent,
     HomeComponent,
     RegisterComponent,
-
     ListsComponent,
     MessagesComponent,
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
+    MemberEditComponent
+
    ],
   imports: [
     SharedModule,
