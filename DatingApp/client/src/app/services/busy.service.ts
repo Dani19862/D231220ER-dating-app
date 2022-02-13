@@ -6,28 +6,30 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class BusyService {
 
-busyRequestCount = 0;
-constructor(private spinnerService : NgxSpinnerService) {}
+  busyRequestCount = 0;
+  constructor(
+    private spinnerService: NgxSpinnerService
+  ) { }
 
-
- busy(){
-  this.busyRequestCount++;
-  this.spinnerService.show(
-    undefined,
-    {
-      bdColor : 'rgb(255,255,255,0)',
-      color: '#333333',
-      type: 'line-scale-party'
-    }
-  )
-}
-
-idle(){
-  this.busyRequestCount--;
-  if(this.busyRequestCount <= 0){
-    this.busyRequestCount = 0;
-    this.spinnerService.hide();
+  busy() {
+    this.busyRequestCount++;
+    this.spinnerService.show(
+      undefined,
+      {
+        bdColor: 'rgb(255,255,255,0)',
+        color: '#333333',
+        type: 'line-scale-party'
+      }
+    )
   }
-}
+
+  idle() {
+    this.busyRequestCount--;
+    if(this.busyRequestCount <= 0) {
+      this.busyRequestCount = 0;
+      this.spinnerService.hide();
+    }
+  }
+
 
 }

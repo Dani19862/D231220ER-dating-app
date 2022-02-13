@@ -18,7 +18,7 @@ export class MembersService {
       return of(this.members);
     }
     return this.http.get<Member[]>(`${this.baseUrl}users`).pipe(
-      tap(members => this.members === members));
+      tap(members => this.members = members));
   }
 
   getMember(username: string): Observable<Member> {
