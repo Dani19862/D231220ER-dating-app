@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
@@ -19,20 +20,35 @@ namespace API.Controllers
             _userRepository = userRepository;
         }
 
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //nameid
+
+            var user = await _userRepository.GetUserByUserNameAsync(username);  
+
+            _mapper.Map(memberUpdateDto, user);
+
+            _userRepository.Update(user);
+
+            if (await _userRepository.SaveAllAsync())
+            {
+                return NoContent();
+            }
+
+            return BadRequest($"Updating user {user.Id} failed on save");
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
             var usersToReturn = await _userRepository.GetMembersAsync();
-            // var users = await _userRepository.GetUsersAsync();
-            // var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
             return Ok(usersToReturn);
         }
 
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            // var user = await _userRepository.GetUserByUserNameAsync(username);
-            // var userToReturn = _mapper.Map<MemberDto>(user);
             var userToReturn = await _userRepository.GetMemberAsync(username);
             return userToReturn;
         }
