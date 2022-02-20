@@ -108,3 +108,4 @@ StudenAssets
 **/bin
 .vs
 .vs**
+.appsettings.json

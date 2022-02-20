@@ -1,3 +1,4 @@
+import { Photo } from './../models/photo';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
@@ -18,24 +19,32 @@ export class MembersService {
       return of(this.members);
     }
     return this.http.get<Member[]>(`${this.baseUrl}users`).pipe(
-      tap(members => this.members === members));
+      tap(members => this.members = members));
   }
 
   getMember(username: string): Observable<Member> {
     const member = this.members.find(m => m.username === username);
-    if(member){
+      if(member){
       return of(member)};
-    return this.http.get<Member>(`${this.baseUrl}users/${username}`)
+      return this.http.get<Member>(`${this.baseUrl}users/${username}`)
   }
 
   updateMember(member:Member){
 
     return this.http.put(`${this.baseUrl}users`, member).pipe(
-     tap(_ => {
-       const index = this.members.findIndex(m => m.id === member.id);
-        this.members[index] = member;
+    tap(_ => {
+      const index = this.members.findIndex(m => m.id === member.id);
+      this.members[index] = member;
      }))
   }
-}
 
+  setMainPhoto(PhotoId :number): Observable<any>{
+
+    return this.http.put(`${this.baseUrl}users/set-Main-Photo/${PhotoId}`,{});
+  }
+
+  deletePhoto(PhotoId:number): Observable<any>{
+    return this.http.delete(`${this.baseUrl}users/delete-photo/${PhotoId}`);
+  }
+}
 

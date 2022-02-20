@@ -20,6 +20,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { SharedModule } from './modules/shared.module';
 import { MemberEditComponent } from './member-edit/member-edit.component';
+import { PhotoEditorComponent } from './member-edit/photo-editor/photo-editor.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 
@@ -35,8 +37,9 @@ import { MemberEditComponent } from './member-edit/member-edit.component';
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    MemberEditComponent
-
+    MemberEditComponent,
+    PhotoEditorComponent
+    
    ],
   imports: [
     SharedModule,
@@ -62,7 +65,7 @@ import { MemberEditComponent } from './member-edit/member-edit.component';
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
       multi: true
-    }
+  }
   ],
   bootstrap: [AppComponent]
 })
