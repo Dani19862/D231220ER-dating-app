@@ -10,7 +10,7 @@ namespace API.Extentions
 {
     public static class ApplictaionServiceExtensions
     {
-        public static IServiceCollection AddApplictionServices (this IServiceCollection services , IConfiguration config)
+        public static IServiceCollection AddApplicationServices (this IServiceCollection services , IConfiguration config)
         {
             
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
