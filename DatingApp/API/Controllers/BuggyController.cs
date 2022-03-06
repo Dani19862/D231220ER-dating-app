@@ -27,7 +27,7 @@ namespace API.Controllers
             return "Secret string";
         }
 
-        //   400 not found
+        //   404 not found
         [HttpGet("not-found")]  //  api/buggy/not-found
         public ActionResult<AppUser> GetNotFound()
         {

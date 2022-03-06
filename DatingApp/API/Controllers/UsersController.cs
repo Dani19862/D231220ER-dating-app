@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using API.Entities;
 using API.Extensions;
 using CloudinaryDotNet.Actions;
+using API.Helpers;
+using API.Extentions;
 
 namespace API.Controllers
 {
@@ -48,11 +50,25 @@ namespace API.Controllers
       }
 
     [HttpGet]
-      public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
-        {
-         var usersToReturn = await _userRepository.GetMembersAsync();
-         return Ok(usersToReturn);
-        }
+    public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
+    {
+       var user = await _userRepository.GetUserByUserNameAsync(User.GetUsername());     
+       if(string.IsNullOrEmpty(userParams.Gender))
+       {
+        userParams.Gender = user.Gender == "male" ? "female" : "male";
+       }
+       userParams.CurrentUserName = user.UserName;
+
+       var users = await _userRepository.GetMembersAsync(userParams);
+       Response.AddPaginationHeader(
+           users.CurrnetPage, 
+           users.PageSize, 
+           users.TotalCount, 
+           users.TotalPages
+        );
+        return Ok(users);
+    
+    }
 
     [HttpGet("{username}", Name = "GetUser")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)

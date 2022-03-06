@@ -1,9 +1,13 @@
-import { Photo } from './../models/photo';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { User } from 'src/app/models/user';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
+import { PaginatedResult } from '../models/Pagination';
+import { UserParams } from '../models/user-Params';
+
 
 
 @Injectable({
@@ -11,40 +15,72 @@ import { Member } from '../models/member';
 })
 export class MembersService {
   baseUrl = environment.apiUrl;
-  members:Member[] = [];
-  constructor(private http:HttpClient) { }
+  members: Member[] = [];
 
-  getMembers(): Observable<Member[]> {
-    if(this.members.length){
-      return of(this.members);
-    }
-    return this.http.get<Member[]>(`${this.baseUrl}users`).pipe(
-      tap(members => this.members = members));
+  constructor(private http: HttpClient) { }
+
+
+  getMembers(userParams : UserParams): Observable<PaginatedResult<Member[]>> {
+
+    let params = this.getPaginationParams(userParams);
+    params = params.append('minAge', userParams.minAge.toString());
+    params = params.append('maxAge', userParams.maxAge.toString());
+    params = params.append('gender', userParams.gender);
+
+
+
+
+    return this.getPaginatedResult<Member[]>(`${this.baseUrl} users`,params)
   }
+
+  private getPaginatedResult<T>(url:string, params: HttpParams): Observable<PaginatedResult<T>> {
+    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
+
+    return this.http.get<T>(url,
+      {
+        observe: 'response',
+        params
+      }).pipe(
+        map((res: HttpResponse<T>) => {
+          paginatedResult.result = res.body as T;
+          if (res.headers.get('Pagination') !== null) {
+            paginatedResult.pagination = JSON.parse(res.headers.get('Pagination') || '');
+          }
+          return paginatedResult;
+        })
+      );
+  }
+
 
   getMember(username: string): Observable<Member> {
-    const member = this.members.find(m => m.username === username);
-      if(member){
-      return of(member)};
-      return this.http.get<Member>(`${this.baseUrl}users/${username}`)
+    const member = this.members.find(x => x.username === username);
+    if (member) {
+      return of(member);
+    }
+    return this.http.get<Member>(`${this.baseUrl}users/${username}`)
   }
 
-  updateMember(member:Member){
-
+  updateMember(member: Member) {
     return this.http.put(`${this.baseUrl}users`, member).pipe(
-    tap(_ => {
-      const index = this.members.findIndex(m => m.id === member.id);
-      this.members[index] = member;
-     }))
+      tap(_ => {
+        const index = this.members.findIndex(x => x.id === member.id);
+        this.members[index] = member;
+      })
+    )
   }
 
-  setMainPhoto(PhotoId :number): Observable<any>{
-
-    return this.http.put(`${this.baseUrl}users/set-Main-Photo/${PhotoId}`,{});
+  setMainPhoto(photoId: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}users/set-main-photo/${photoId}`, {});
   }
 
-  deletePhoto(PhotoId:number): Observable<any>{
-    return this.http.delete(`${this.baseUrl}users/delete-photo/${PhotoId}`);
+  deletePhoto(photoId:number) {
+    return this.http.delete(`${this.baseUrl}users/delete-photo/${photoId}`);
+  }
+
+  private getPaginationParams({pageNumber, pageSize}: UserParams) {
+    let params = new HttpParams();
+    params = params.append('pageNumber', pageNumber.toString());
+    params = params.append('pageSize', pageSize.toString());
+    return params;
   }
 }
-
