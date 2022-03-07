@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace API.Extentions
+namespace API.Extensions
 {
     public static class ApplictaionServiceExtensions
     {

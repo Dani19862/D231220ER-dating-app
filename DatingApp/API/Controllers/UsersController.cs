@@ -10,10 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using API.Entities;
-using API.Extensions;
 using CloudinaryDotNet.Actions;
 using API.Helpers;
-using API.Extentions;
+using API.Extensions;
 
 namespace API.Controllers
 {
@@ -30,56 +29,57 @@ namespace API.Controllers
             _mapper = mapper;
         }
        
-    [HttpPut]
-    public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
-      {
-        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //nameid
-
-        var user = await _userRepository.GetUserByUserNameAsync(username);
-
-        _mapper.Map(memberUpdateDto, user);
-
-        _userRepository.Update(user);
-
-        if (await _userRepository.SaveAllAsync())
+        [HttpPut]
+         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            return NoContent();
+          var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //nameid
+  
+          var user = await _userRepository.GetUserByUserNameAsync(username);
+  
+          _mapper.Map(memberUpdateDto, user);
+  
+          _userRepository.Update(user);
+  
+          if (await _userRepository.SaveAllAsync())
+          {
+              return NoContent();
+          }
+  
+          return BadRequest($"Updating user {user.Id} failed on save");
         }
-
-        return BadRequest($"Updating user {user.Id} failed on save");
-      }
 
     [HttpGet]
     public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
-    {
-       var user = await _userRepository.GetUserByUserNameAsync(User.GetUsername());     
-       if(string.IsNullOrEmpty(userParams.Gender))
-       {
-        userParams.Gender = user.Gender == "male" ? "female" : "male";
-       }
-       userParams.CurrentUserName = user.UserName;
+        {
+            string userName = User.GetUsername(); 
+           var user = await _userRepository.GetUserByUserNameAsync(userName);     
+          if(string.IsNullOrEmpty(userParams.Gender))
+          {
+           userParams.Gender = user.Gender == "male" ? "female" : "male";
+          }
+          userParams.CurrentUsername = user.UserName;
+   
+          var users = await _userRepository.GetMembersAsync(userParams);
+          Response.AddPaginationHeader(
+              users.CurrnetPage, 
+              users.PageSize, 
+              users.TotalCount, 
+              users.TotalPages
+            );
+           return Ok(users);
+       
+        }
+   
+        [HttpGet("{username}", Name = "GetUser")]
+        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        {
+          var userToReturn = await _userRepository.GetMemberAsync(username);
+          return userToReturn;
+        }
 
-       var users = await _userRepository.GetMembersAsync(userParams);
-       Response.AddPaginationHeader(
-           users.CurrnetPage, 
-           users.PageSize, 
-           users.TotalCount, 
-           users.TotalPages
-        );
-        return Ok(users);
-    
-    }
-
-    [HttpGet("{username}", Name = "GetUser")]
-    public async Task<ActionResult<MemberDto>> GetUser(string username)
-    {
-        var userToReturn = await _userRepository.GetMemberAsync(username);
-        return userToReturn;
-    }
-
-    [HttpPost("add-photo")]
-    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
-    {
+       [HttpPost("add-photo")]
+        public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+        {
             var username = User.GetUsername();
             var user = await _userRepository.GetUserByUserNameAsync(username);
 
@@ -107,9 +107,9 @@ namespace API.Controllers
             }
 
             return BadRequest("Problem adding Photos");
-    }
+        }
 
-     [HttpPut("set-main-photo/{photoId}")]
+       [HttpPut("set-main-photo/{photoId}")]
        public async Task<ActionResult> SetMainPhoto(int photoId)
 
         {
@@ -140,7 +140,7 @@ namespace API.Controllers
             return BadRequest("Could not set photo to main");
         }     
 
-            [HttpDelete("delete-photo/{photoId}")]
+        [HttpDelete("delete-photo/{photoId}")]
          public async Task<ActionResult> DeletePhotoAsync(int photoId)
         {
             var username = User.GetUsername();

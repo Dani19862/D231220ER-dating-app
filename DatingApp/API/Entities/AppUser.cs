@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System;
-using API.Extentions;
+using API.Extensions;
 
 namespace API.Entities
 {

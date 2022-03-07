@@ -6,7 +6,8 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
 import { PaginatedResult } from '../models/Pagination';
-import { UserParams } from '../models/user-Params';
+import { UserParams } from '../models/userParams';
+
 
 
 
@@ -27,10 +28,7 @@ export class MembersService {
     params = params.append('maxAge', userParams.maxAge.toString());
     params = params.append('gender', userParams.gender);
 
-
-
-
-    return this.getPaginatedResult<Member[]>(`${this.baseUrl} users`,params)
+    return this.getPaginatedResult<Member[]>(`${this.baseUrl}users`,params)
   }
 
   private getPaginatedResult<T>(url:string, params: HttpParams): Observable<PaginatedResult<T>> {

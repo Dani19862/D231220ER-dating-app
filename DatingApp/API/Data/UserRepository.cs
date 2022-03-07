@@ -27,11 +27,11 @@ namespace API.Data
         {
             var query = _context.Users.AsQueryable();
 
-            query = query.Where(u => u.UserName != userParams.CurrentUserName);
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender == userParams.Gender);
             
-            var minDob = DateTime.Today.AddYears(-userParams.MaxAge-1);
-            var maxDob = DateTime.Today.AddYears(-userParams.MinAge-1);
+            var minDob = DateTime.Today.AddYears(userParams.MaxAge*-1);
+            var maxDob = DateTime.Today.AddYears(userParams.MinAge*-1);
            
             query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
 

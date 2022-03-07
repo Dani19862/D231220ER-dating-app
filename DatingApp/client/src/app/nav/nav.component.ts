@@ -20,10 +20,11 @@ export class NavComponent implements OnInit {
     private accountService :AccountService,
     private router: Router,
     private toastr: ToastrService
-    ) {
+    )
+    {
     this.currentUser$ = this.accountService.currentUser$;
-    
-     }
+
+    }
 
 
   ngOnInit(): void {

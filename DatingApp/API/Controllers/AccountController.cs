@@ -55,7 +55,6 @@ namespace API.Controllers
         }
 
         [HttpPost("login")] //api//account/login
-
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await this._context
@@ -69,7 +68,6 @@ namespace API.Controllers
             for (var i = 0; i < computedHash.Length; i++)
             {
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("invalid password");
-
             }
             return new UserDto
             {

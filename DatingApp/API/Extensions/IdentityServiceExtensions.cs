@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Extentions
+namespace API.Extensions
 {
     public static class IdentityServiceExtensions
     {

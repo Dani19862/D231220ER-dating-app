@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
 
-namespace API.Extentions
+namespace API.Extensions
 {
     public static class HttpExtensions
     {
