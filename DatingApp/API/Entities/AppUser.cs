@@ -21,7 +21,17 @@ namespace API.Entities
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection <Photo> Photos { get; set; }
-        
 
+        /// <summary>
+        
+        /// <summary>
+        /// who liked this currently logged in user.
+        /// </summary> 
+        public ICollection<UserLike> LikedByUsers { get; set; }
+
+        /// <summary>
+        /// who this user liked.
+        /// </summary> 
+        public ICollection<UserLike> LikedUsers { get; set; } 
     }
 }

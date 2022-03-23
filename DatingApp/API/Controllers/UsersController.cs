@@ -51,8 +51,8 @@ namespace API.Controllers
     [HttpGet]
     public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            string userName = User.GetUsername(); 
-           var user = await _userRepository.GetUserByUserNameAsync(userName);     
+          string userName = User.GetUsername(); 
+          var user = await _userRepository.GetUserByUserNameAsync(userName);     
           if(string.IsNullOrEmpty(userParams.Gender))
           {
            userParams.Gender = user.Gender == "male" ? "female" : "male";

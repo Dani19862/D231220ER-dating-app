@@ -1,3 +1,5 @@
+import { RouterModule } from '@angular/router';
+import { MemberCardComponent } from './../members/member-card/member-card.component';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,6 +18,7 @@ import { TimeagoModule } from 'ngx-timeago';
   imports: [
     NgxGalleryModule,
     CommonModule,
+    RouterModule,
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
@@ -31,7 +34,9 @@ import { TimeagoModule } from 'ngx-timeago';
 
 
   ],
-  declarations: [],
+  declarations: [
+    MemberCardComponent
+  ],
   exports:[
 
     ButtonsModule,
@@ -44,7 +49,8 @@ import { TimeagoModule } from 'ngx-timeago';
     BsDatepickerModule,
     FormsModule,
     PaginationModule,
-    TimeagoModule
+    TimeagoModule,
+    MemberCardComponent
   ]
 })
 export class SharedModule { }

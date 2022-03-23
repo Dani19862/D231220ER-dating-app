@@ -47,6 +47,7 @@ namespace API.Controllers
             return thingToString;
         }
 
+        // 400 bad request
         [HttpGet("bad-request")]   // api/buggy/bad-request
         public ActionResult<string> GetBadRequest()
         {
