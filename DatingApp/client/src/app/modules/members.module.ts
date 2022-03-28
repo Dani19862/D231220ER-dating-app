@@ -1,3 +1,4 @@
+import { MemberMessagesComponent } from './../members/member-messages/member-messages.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,8 +18,7 @@ const routes: Routes = [
   declarations: [
     MemberListComponent,
     MemberDetailComponent,
-
-
+    MemberMessagesComponent
 
   ],
   imports: [
