@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { Message } from './../../models/message';
 import { Component, Input, OnInit } from '@angular/core';
 import { MessageService } from 'src/app/services/messages.service';
@@ -10,21 +11,24 @@ import { MessageService } from 'src/app/services/messages.service';
 export class MemberMessagesComponent implements OnInit {
 
   @Input() username: string;
-  messages: Message[];
+  @Input()  messages: Message[];
+  messageContent: string;
 
-  constructor(
-    private messageService: MessageService
-  ) { }
+  constructor(private messgaeService: MessageService) { }
 
 
   ngOnInit() {
-    this.loadMessages();
-  }
-  loadMessages() {
-     this.messageService.getMessageThread(this.username).subscribe(
-       x => {
-         this.messages = x;
-       });
+
   }
 
+  sendMessage(form:NgForm){
+    this.messgaeService.sendMessage(this.username, this.messageContent)
+    .subscribe((message) => {
+      this.messages.push(message as Message);
+      form.reset();
+    })
+  }
 }
+
+
+

@@ -52,6 +52,11 @@ namespace API.Data
                 _ => query.Where(m => m.Recipient.UserName == messageParams.UserName && m.DateRead == null)
             };
 
+            query = query.Where(m =>(
+                (m.Recipient.UserName == messageParams.UserName && !m.RecipientDeleted) ||
+                (m.SenderUserName == messageParams.UserName && !m.SenderDeleted)
+            ));
+
             var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
 
             return PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
@@ -66,12 +71,14 @@ namespace API.Data
             .Include(u=> u.Sender).ThenInclude(p=> p.Photos)
             .Include(u=> u.Recipient).ThenInclude(p=> p.Photos)
             .Where(m =>
-             m.Recipient.UserName == currentUsername && m.SenderUserName == RecipientUsername ||
-             m.Recipient.UserName == RecipientUsername && m.SenderUserName == currentUsername)
+            m.Recipient.UserName == currentUsername && m.SenderUserName == RecipientUsername ||
+            m.Recipient.UserName == RecipientUsername && m.SenderUserName == currentUsername)
+            .Where(m=> (m.Recipient.UserName == currentUsername && !m.RecipientDeleted ) ||
+                       (( m.Sender.UserName == currentUsername && !m.SenderDeleted )))
             .OrderBy(m => m.MessageSent)
             .ToListAsync();
 
-            if(await updateUnread(messages, currentUsername) ==-1 )
+            if(await updateUnread(messages, currentUsername) == -1 )
             {
                 throw  new Exception("Could not update unread messages");
             }

@@ -1,13 +1,13 @@
 <div class="row mb-4">
   <!-- unread/inbox/outbox -->
   <div class="btn-group" name="container">
-    <button class="btn btn-primary" btnRadio="Unread" [(ngModel)]="container" (click)="leadMessages()">
+    <button class="btn btn-primary" btnRadio="Unread" [(ngModel)]="container" (click)="loadMessages()">
       <i class="fa fa-envelope"></i>Unread
     </button>
-    <button class="btn btn-primary" btnRadio="Inbox" [(ngModel)]="container" (click)="leadMessages()">
+    <button class="btn btn-primary" btnRadio="Inbox" [(ngModel)]="container" (click)="loadMessages()">
       <i class="fa fa-envelope-open"></i>inbox
     </button>
-    <button class="btn btn-primary" btnRadio="Outbox" [(ngModel)]="container" (click)="leadMessages()">
+    <button class="btn btn-primary" btnRadio="Outbox" [(ngModel)]="container" (click)="loadMessages()">
       <i class="fa fa-paper-plane"></i>Outbox
     </button>
   </div>
@@ -25,7 +25,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let message of messages"
+      <tr [hidden]="loading" *ngFor="let message of messages"
+        [queryParams]="{tabs:3}"
         [routerLink]="'/members/' + (container === 'Outbox' ? message.recipientUsername : message.senderUsername)">
         <td>{{message.content}}</td>
         <td>
@@ -43,14 +44,17 @@
           </ng-container>
         </td>
         <td>{{message.messageSent | timeago}}</td>
-        <button class="btn btn-danger">Danger</button>
+        <td>
 
+        <button (click)="$event.stopPropagation()" (click)="deleteMessage(message.id)" class="btn btn-danger">Delete
+          <i class="fa fa-trash"></i>
+        </button>
       </tr>
     </tbody>
   </table>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination">
+<div class="d-flex justify-content-center" *ngIf="pagination && !loading">
 
   <pagination
   [boundaryLinks]="true"

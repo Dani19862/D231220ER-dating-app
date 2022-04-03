@@ -6,11 +6,15 @@ import { MemberDetailComponent } from '../members/member-detail/member-detail.co
 import { MemberListComponent } from '../members/member-list/member-list.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from './shared.module';
+import { MemberDetaliedResolver } from '../resolvers/member-detalied.resolver';
 
 
 const routes: Routes = [
   { path: '', component: MemberListComponent, pathMatch: 'full' },
-  { path: ':username', component: MemberDetailComponent }
+  { path: ':username', component: MemberDetailComponent,
+  resolve:{
+    member: MemberDetaliedResolver
+  }}
 
 ]
 
